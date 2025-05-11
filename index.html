@@ -1,0 +1,89 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>퀴즈 맞히기 게임</title>
+  <style>
+    body { font-family: Arial; text-align: center; padding: 40px; }
+    .question { font-size: 24px; margin-bottom: 20px; }
+    .option { display: block; margin: 10px; padding: 10px; font-size: 18px; cursor: pointer; border: 1px solid #aaa; border-radius: 10px; }
+    .option:hover { background-color: #f0f0f0; }
+    #result { margin-top: 20px; font-size: 20px; font-weight: bold; }
+    #score { margin-top: 30px; font-size: 22px; }
+  </style>
+</head>
+<body>
+
+  <h1>🧠 퀴즈 맞히기 게임</h1>
+  <div id="quiz">
+    <div class="question" id="question">문제 나오는 곳</div>
+    <div id="options"></div>
+    <div id="result"></div>
+    <button onclick="nextQuestion()">다음 문제</button>
+  </div>
+  <div id="score"></div>
+
+  <script>
+    const questions = [
+      {
+        q: "HTML의 약자는?",
+        options: ["HyperText Markup Language", "HighText Machine Language", "HyperTool Multi Language", "HomeTool Markup Language"],
+        answer: 0
+      },
+      {
+        q: "자바스크립트에서 변수 선언 키워드가 아닌 것은?",
+        options: ["let", "const", "var", "define"],
+        answer: 3
+      },
+      {
+        q: "CSS는 무엇의 약자인가?",
+        options: ["Creative Style System", "Cascading Style Sheets", "Computer Style Syntax", "Color Style Selector"],
+        answer: 1
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function showQuestion() {
+      const q = questions[current];
+      document.getElementById("question").textContent = q.q;
+      const optionsDiv = document.getElementById("options");
+      optionsDiv.innerHTML = "";
+      document.getElementById("result").textContent = "";
+
+      q.options.forEach((opt, index) => {
+        const btn = document.createElement("div");
+        btn.className = "option";
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(index);
+        optionsDiv.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(choice) {
+      const resultDiv = document.getElementById("result");
+      if (choice === questions[current].answer) {
+        resultDiv.textContent = "✅ 정답입니다!";
+        score++;
+      } else {
+        resultDiv.textContent = "❌ 오답입니다!";
+      }
+    }
+
+    function nextQuestion() {
+      current++;
+      if (current < questions.length) {
+        showQuestion();
+      } else {
+        document.getElementById("quiz").style.display = "none";
+        document.getElementById("score").textContent = `게임 종료! 맞춘 문제 수: ${score} / ${questions.length}`;
+      }
+    }
+
+    showQuestion();
+  </script>
+
+</body>
+</html>
